@@ -4,6 +4,7 @@
 #include <Arduino.h>
 class db
 {
+public:
     bool vorher, out, in, inv;
     unsigned long last = 0;
     uint8_t taster = 0;
@@ -18,13 +19,14 @@ class flanke
 public:
     bool vorher, out, in, pos, neg, lang;
     bool *input;
+    void init(bool &);
+
+    void poll();
 
 private:
     unsigned long zeit = 0;
 
-    void init(bool &);
-
-    void poll();
+    
 };
 
 #endif
