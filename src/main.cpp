@@ -60,5 +60,20 @@ void loop()
     fp_taster2.poll();
     analog.poll();
     blink.poll();
+    if(fp_taster1.lang || fp_taster2.lang)
+    {
+        enable = 0;
+        denable = 0;
+    }
+    if(fp_taster1.kurz)
+    {
+        enable = 1;
+        denable = 0;
+    }
+    if(fp_taster2.kurz)
+    {
+        enable = 0;
+        denable = 1;
+    }
 
 }
