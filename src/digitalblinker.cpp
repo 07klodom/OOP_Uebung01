@@ -7,16 +7,20 @@ void digital::init(uint8_t _led1, uint8_t _led2, uint32_t blinkzeit, bool enable
     led2 = _led2;
     Aktiv = enable;
     time = blinkzeit;
+    lastblink = millis();
+    digitalWrite(led1, LOW);
+    digitalWrite(led2, LOW);
 }
 
 void digital::poll()
 {
     if (Aktiv)
     {
-        if (millis() - lastblink > time)
+        if (millis() - lastblink >= time)
         {
-            digitalWrite(led1, !digitalRead(led1));
-            digitalWrite(led2, digitalRead(led1));
+            bool currentState = digitalRead(led1);
+            digitalWrite(led1, !currentState);
+            digitalWrite(led2, currentState);
             lastblink = millis();
         }
     }

@@ -7,43 +7,29 @@ void blinken::init(uint8_t _led1, uint8_t _led2, uint8_t _POTI, bool enable_)
     led2 = _led2;
     POTI = _POTI;
     enable = enable_;
+    last = millis();
+    hell = 0;
+    hell2 = 255;
+    state = 5;
+    state2 = 5;
 }
 
 void blinken::poll()
 {
-    uint64_t poti = analogRead(POTI);
-    uint64_t blinkInterval = (100 + (poti * 2900) / 1023) / 51;
     if (enable)
     {
+        uint64_t poti = analogRead(POTI);
+        uint64_t blinkInterval = map(poti, 0, 1023, 50, 1000);
+        
         if (millis() - last >= blinkInterval)
         {
             last = millis();
             analogWrite(led1, hell);
-            
-            hell += state;
-            if (hell >= 255)
-            {
-                hell = 255;
-                state = -state;
-            }
-            else if (hell <= 0)
-            {
-                hell = 0;
-                state = -state;
-            }
-
             analogWrite(led2, hell2);
+            hell += state;
             hell2 -= state2;
-            if (hell2 >= 255)
-            {
-                hell2 = 255;
-                state2 = -state2;
-            }
-            else if (hell2 <= 0)
-            {
-                hell2 = 0;
-                state2 = -state2;
-            }
+            if (hell >= 255 || hell <= 0) state = -state;
+            if (hell2 >= 255 || hell2 <= 0) state2 = -state2;
         }
     }
     else
