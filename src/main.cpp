@@ -42,6 +42,11 @@ flanke fp_taster2;
 bool enable, denable;
 void setup()
 {
+    pinMode(TASTER1,INPUT_PULLUP);
+    pinMode(TASTER2,INPUT_PULLUP);
+    pinMode(LED1,OUTPUT);
+    pinMode(LED2,OUTPUT);
+    pinMode(POT1,INPUT);
     Serial.begin(115200); // Baud rate
     Serial.println("..Start..\n");
     analog.init(LED1, LED2, POT1, enable);
@@ -65,12 +70,12 @@ void loop()
         enable = 0;
         denable = 0;
     }
-    if(fp_taster1.kurz)
+    if(fp_taster1.kurz ==1)
     {
         enable = 1;
         denable = 0;
     }
-    if(fp_taster2.kurz)
+    if(fp_taster2.kurz==1)
     {
         enable = 0;
         denable = 1;

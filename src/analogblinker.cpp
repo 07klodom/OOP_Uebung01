@@ -48,8 +48,8 @@ void blinken::poll()
     }
     else
     {
-        analogWrite(led1, 255);
-        analogWrite(led2, 255);
+        analogWrite(led1, 0);
+        analogWrite(led2, 0);
     }
 
 }

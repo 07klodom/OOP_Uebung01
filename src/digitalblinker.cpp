@@ -22,7 +22,7 @@ void digital::poll()
     }
     else
     {
-        digitalWrite(led1, HIGH);
+        digitalWrite(led1, LOW);
         digitalWrite(led2, LOW);
     }
 }
