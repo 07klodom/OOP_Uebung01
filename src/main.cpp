@@ -23,19 +23,22 @@
 // ****************************************************************************
 
 #include <Arduino.h>
-
+#include <analogblinker.h>
 #define LED1 8    // Low-side switch (leuchtet mit LOW)
 #define LED2 7  // Low-side switch (leuchtet mit LOW)
 #define TASTER1 3 // LOW wenn gedrückt
 #define TASTER2 2 // LOW wenn gedrückt
 #define POT1 A7   
-
+blinken analog;
+bool enable;
 void setup()
 {
     Serial.begin(115200); // Baud rate
     Serial.println("..Start..\n");
+    analog.init(LED1, LED2, POT1, enable);
 }
 
 void loop()
 {
+    analog.poll();
 }
