@@ -2,7 +2,7 @@
 #define HELPER_H
 
 #include <Arduino.h>
-struct db
+class db
 {
     bool vorher, out, in, inv;
     unsigned long last = 0;
@@ -13,7 +13,7 @@ struct db
 
     void poll();
 };
-struct flanke
+class flanke
 {
 public:
     bool vorher, out, in, pos, neg, lang;
