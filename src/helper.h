@@ -17,8 +17,9 @@ public:
 class flanke
 {
 public:
-    bool vorher, out, in, pos, neg, lang;
+    bool vorher, out, in, pos, neg, lang, kurz;
     bool *input;
+    
     void init(bool &);
 
     void poll();

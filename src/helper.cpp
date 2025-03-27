@@ -47,6 +47,7 @@ void flanke::poll()
     neg = true;
 
     lang = false;
+    kurz = false;
 
     if (pos == true)
     {
@@ -54,9 +55,13 @@ void flanke::poll()
     }
     if(neg == true)
     {
-       if(millis() - zeit <= 1000)
+       if(millis() - zeit >= 1000)
        {
         lang = true;
+       }
+       else if(millis() - zeit <= 1000)
+       {
+        kurz = true;
        }
     }
 
