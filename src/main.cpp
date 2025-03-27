@@ -42,13 +42,19 @@ flanke fp_taster2;
 bool enable, denable;
 void setup()
 {
-    pinMode(TASTER1,INPUT_PULLUP);
-    pinMode(TASTER2,INPUT_PULLUP);
-    pinMode(LED1,OUTPUT);
-    pinMode(LED2,OUTPUT);
-    pinMode(POT1,INPUT);
-    Serial.begin(115200); // Baud rate
+    pinMode(TASTER1, INPUT_PULLUP);
+    pinMode(TASTER2, INPUT_PULLUP);
+    pinMode(LED1, OUTPUT);
+    pinMode(LED2, OUTPUT);
+    pinMode(POT1, INPUT);
+    
+    Serial.begin(115200);
     Serial.println("..Start..\n");
+    
+    enable = false;
+    denable = false;
+    blinktime = 500; // Default blink time
+    
     analog.init(LED1, LED2, POT1, enable);
     blink.init(LED1, LED2, blinktime, denable);
     db_taster1.init(TASTER1, DB_ZEIT, false);
@@ -57,28 +63,41 @@ void setup()
     fp_taster2.init(db_taster2.out);
 }
 
+
 void loop()
 {
+    
     db_taster1.poll();
     db_taster2.poll();
     fp_taster1.poll();
     fp_taster2.poll();
-    analog.poll();
-    blink.poll();
+
     if(fp_taster1.lang || fp_taster2.lang)
     {
-        enable = 0;
-        denable = 0;
+        enable = false;
+        denable = false;
     }
-    if(fp_taster1.kurz ==1)
+    else if(fp_taster1.kurz)
     {
-        enable = 1;
-        denable = 0;
+        enable = true;
+        denable = false;
     }
-    if(fp_taster2.kurz==1)
+    else if(fp_taster2.kurz)
     {
-        enable = 0;
-        denable = 1;
+        enable = false;
+        denable = true;
     }
 
+    if (enable)
+    {
+        blink.poll();
+    }
+    else if (denable)
+    {
+        
+        analog.poll();
+    }
+
+    
 }
+

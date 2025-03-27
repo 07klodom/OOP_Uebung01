@@ -11,24 +11,19 @@ void db::init(uint8_t _taster, uint8_t _db_zeit, bool _inv)
 void db::poll()
 {
   in = digitalRead(taster);
-  in = inv ? !in : in; // ternary
+  in = inv ? !in : in;
 
-  out = vorher;
-  if (millis() - last > 500)
+  if (millis() - last > db_zeit) // Nutzt die einstellbare Entprellzeit
   {
-    if (in != vorher)
-    {
-      out = vorher;
-    }
-    else
+    if (in == vorher) // Wenn sich der Taster stabilisiert hat
     {
       out = in;
     }
-
     last = millis();
     vorher = in;
   }
 }
+
 void flanke::init(bool &_input)
 {
   input = &_input;
@@ -36,34 +31,31 @@ void flanke::init(bool &_input)
 
 void flanke::poll()
 {
-  in = *input; // derfernwier.operator * greift auf den Inahlt der speicherzelle zu, auf die der pointer zeigt
+  in = *input;
 
-  pos = false;
-  if (in && !vorher)
-    pos = true;
+  pos = (!vorher && in); // positive Flanke
+  neg = (vorher && !in); // negative Flanke
 
-  neg = false;
-  if (!in && vorher)
-    neg = true;
+  if (pos)
+  {
+    zeit = millis();
+  }
 
-    lang = false;
-    kurz = false;
+  lang = false;
+  kurz = false;
 
-    if (pos == true)
+  if (neg)
+  {
+    uint32_t dauer = millis() - zeit;
+    if (dauer >= 1000)
     {
-        zeit = millis();
+      lang = true;
     }
-    if(neg == true)
+    else
     {
-       if(millis() - zeit >= 1000)
-       {
-        lang = true;
-       }
-       else if(millis() - zeit <= 1000)
-       {
-        kurz = true;
-       }
+      kurz = true;
     }
+  }
 
   vorher = in;
 }

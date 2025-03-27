@@ -8,18 +8,18 @@ void blinken::init(uint8_t _led1, uint8_t _led2, uint8_t _POTI, bool enable_)
     POTI = _POTI;
     enable = enable_;
 }
+
 void blinken::poll()
 {
     uint64_t poti = analogRead(POTI);
-    blinken = (100 + (poti * 2900) /1023)/51;
+    uint64_t blinkInterval = (100 + (poti * 2900) / 1023) / 51;
     if (enable)
     {
-        if (millis() - last >= blinken)
+        if (millis() - last >= blinkInterval)
         {
             last = millis();
             analogWrite(led1, hell);
             
-
             hell += state;
             if (hell >= 255)
             {
@@ -51,5 +51,4 @@ void blinken::poll()
         analogWrite(led1, 0);
         analogWrite(led2, 0);
     }
-
 }
